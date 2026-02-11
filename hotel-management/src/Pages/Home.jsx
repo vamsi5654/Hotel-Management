@@ -50,19 +50,51 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Rooms & Suites */}
+      {/* Rooms & Suites Section */}
       <section className="rooms-section">
-        <h2>Rooms & Suites</h2>
-        <div className="cards-container">
-          {["Executive Suites", "Premier Suites", "Trident Club Suites", 
-            "Presidential Suite", "Deluxe City View", "Deluxe Park View"].map((room) => (
-            <div className="card" key={room}>
-              <h3>{room}</h3>
-              <button className="btn-secondary">View Details</button>
+        <h2 className="section-title">Rooms & Suites</h2>
+
+        <div className="rooms-container">
+
+          <div className="room-card">
+            <img src="https://source.unsplash.com/600x400/?luxury-suite" alt="Executive Suite" />
+            <div className="room-content">
+              <h3>Executive Suite</h3>
+              <p>Spacious suite with modern interiors and premium comfort.</p>
+              <button>View Details</button>
             </div>
-          ))}
+          </div>
+
+          <div className="room-card">
+            <img src="https://source.unsplash.com/600x400/?hotel-room-deluxe" alt="Premier Suite" />
+            <div className="room-content">
+              <h3>Premier Suite</h3>
+              <p>Elegant room with stunning city views and luxury amenities.</p>
+              <button>View Details</button>
+            </div>
+          </div>
+
+          <div className="room-card">
+            <img src="https://source.unsplash.com/600x400/?presidential-suite" alt="Presidential Suite" />
+            <div className="room-content">
+              <h3>Presidential Suite</h3>
+              <p>Experience unmatched luxury with exclusive services.</p>
+              <button>View Details</button>
+            </div>
+          </div>
+
+            <div className="room-card">
+              <img src="https://source.unsplash.com/600x400/?hotel-room-city-view" alt="Deluxe City View" />
+              <div className="room-content">
+                <h3>Deluxe City View</h3>
+                <p>Comfortable stay with panoramic views of the city skyline.</p>
+                <button>View Details</button>
+              </div>
+            </div>
+
         </div>
       </section>
+
 
       {/* Dining & Services */}
       <section className="services-section">
