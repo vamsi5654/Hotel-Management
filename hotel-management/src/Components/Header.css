@@ -1,28 +1,166 @@
-.main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #1f2933;
-  padding: 15px 30px;
-  color: white;
+/* General Header */
+.premium-header {
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
 }
 
-.logo h2 {
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+.logo img {
+  height: 50px;
+  width: auto;
+  cursor: pointer;
+}
+
+/* Desktop Navigation */
+.nav {
+  flex: 1;
+  margin-left: 40px;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 25px;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #007BFF;
+}
+
+/* CTA / Booking Button */
+.header-cta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.book-btn {
+  background-color: #007BFF;
+  color: #fff;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.book-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.welcome-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #007BFF;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 22px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  height: 3px;
+  background-color: #222;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.open span:nth-child(1) {
+  transform: rotate(45deg) translate(4px, 4px);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(4px, -4px);
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+}
+
+.mobile-menu.active {
+  display: flex;
+}
+
+.mobile-menu ul {
+  list-style: none;
+  padding: 15px 20px;
   margin: 0;
 }
 
-.navbar ul {
-  list-style: none;
-  display: flex;
-  gap: 20px;
+.mobile-menu li {
+  margin-bottom: 12px;
 }
 
-.navbar ul li a {
-  color: white;
+.mobile-menu li a {
   text-decoration: none;
-  font-size: 16px;
+  color: #222;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.navbar ul li a:hover {
-  color: #facc15;
+.mobile-menu li a:hover {
+  color: #007BFF;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .header-cta {
+    display: none;
+  }
+
+  .mobile-menu li a {
+    display: block;
+    width: 100%;
+  }
 }
