@@ -1,21 +1,18 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
-import Header from "./Components/Header";
-import Footer from "./Components/Footer";
+import logo from "./logo.svg";
+import "./App.css";
 
-function Home() {
-  return <h1 style={{ padding: "50px" }}>Welcome to Urbann Hotels</h1>;
-}
+import Header from "./Components/Header";
+import Footer from "./Components/Footer.jsx";   // <-- FIXED
 
 function App() {
   return (
     <>
       <Header />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
-      </Routes>
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>Edit src/App.js and save to reload.</p>
+      </header>
 
       <Footer />
     </>
