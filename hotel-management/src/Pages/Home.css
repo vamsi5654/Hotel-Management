@@ -42,24 +42,6 @@
   transform: perspective(600px) rotateX(12deg);
 }
 
-.btn-primary {
-  background-color: #c59f70;
-  padding: 10px 20px;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-  margin-top: 10px;
-}
-
-.btn-primary:hover { opacity: 0.9; }
-
-/* Intro */
-.intro-section {
-  padding: 2rem 1rem;
-  text-align: center;
-}
-
 /* Rooms */
 .rooms-section {
   padding: 2rem 1rem;
@@ -122,11 +104,4 @@
 .gallery-img img {
   width: 100%;
   border-radius: 6px;
-}
-
-/* Contact */
-.contact-section {
-  text-align: center;
-  padding: 2rem 1rem;
-  background: #f7f7f7;
 }

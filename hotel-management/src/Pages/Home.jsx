@@ -50,18 +50,6 @@ const Home = () => {
         </div>
       </section>
 
-
-      {/* About / Intro */}
-      <section className="intro-section">
-        <div className="intro-text">
-          <h2>About Urbann, Hyderabad</h2>
-          <p>
-            Located in the centre of FINANCIAL District and close to the Special Economic Zone, 
-            our 5-star hotel offers premium rooms, exceptional dining and wellness experiences.
-          </p>
-        </div>
-      </section>
-
       {/* Rooms & Suites */}
       <section className="rooms-section">
         <h2>Rooms & Suites</h2>
