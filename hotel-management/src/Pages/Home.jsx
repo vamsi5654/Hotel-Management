@@ -57,7 +57,7 @@ const Home = () => {
         <div className="rooms-container">
 
           <div className="room-card">
-            <img src="https://source.unsplash.com/600x400/?luxury-suite" alt="Executive Suite" />
+            <img src="https://www.theleela.com/prod/content/assets/aio-banner/dekstop/Executive%20Suite_1920x950.jpg?VersionId=CkEGIREQnGlTkUMykEpMFBlqxW0dKL0J" alt="Executive Suite" />
             <div className="room-content">
               <h3>Executive Suite</h3>
               <p>Spacious suite with modern interiors and premium comfort.</p>
@@ -66,7 +66,7 @@ const Home = () => {
           </div>
 
           <div className="room-card">
-            <img src="https://source.unsplash.com/600x400/?hotel-room-deluxe" alt="Premier Suite" />
+            <img src="https://cdn.prod.website-files.com/6624ff6a5db57a668993dd5e/66a9acbbbe1d78a5ba43d448_IMG_0053%202.webp" alt="Premier Suite" />
             <div className="room-content">
               <h3>Premier Suite</h3>
               <p>Elegant room with stunning city views and luxury amenities.</p>
@@ -75,7 +75,7 @@ const Home = () => {
           </div>
 
           <div className="room-card">
-            <img src="https://source.unsplash.com/600x400/?presidential-suite" alt="Presidential Suite" />
+            <img src="https://edenresort.com/assets/images/_1122x1103_fit_center_90_none/LgHead-2-Bedroom-Suite.jpg" alt="Presidential Suite" />
             <div className="room-content">
               <h3>Presidential Suite</h3>
               <p>Experience unmatched luxury with exclusive services.</p>
@@ -84,7 +84,7 @@ const Home = () => {
           </div>
 
             <div className="room-card">
-              <img src="https://source.unsplash.com/600x400/?hotel-room-city-view" alt="Deluxe City View" />
+              <img src="https://ideaskl.com/wp-content/uploads/2023/05/Premier-Suite-1-1024x683.jpg" alt="Deluxe City View" />
               <div className="room-content">
                 <h3>Deluxe City View</h3>
                 <p>Comfortable stay with panoramic views of the city skyline.</p>
@@ -95,31 +95,79 @@ const Home = () => {
         </div>
       </section>
 
-
-      {/* Dining & Services */}
+      {/* Dining & Services Section */}
       <section className="services-section">
-        <h2>Dining & Experiences</h2>
-        <div className="services-grid">
-          {["Amara", "Kanak", "Ninety Six", "Tuscany", "Spa & Wellness", "Meetings & Events"].map((service) => (
-            <div className="service-card" key={service}>
-              <h4>{service}</h4>
+        <h2 className="section-title">Dining & Services</h2>
+
+        <div className="services-container">
+
+          <div className="service-card">
+            <img src="https://www.bocadolobo.com/en/inspiration-and-ideas/wp-content/uploads/2023/09/50-Luxury-Dining-Rooms-A-Feast-For-The-Senses.jpg" alt="Fine Dining" />
+            <div className="service-content">
+              <h3>Fine Dining</h3>
+              <p>Enjoy world-class cuisine prepared by top chefs.</p>
+              <button>Explore</button>
             </div>
-          ))}
+          </div>
+
+          <div className="service-card">
+            <img src="https://tattvaspa.com/wp-content/uploads/2021/02/1-1024x1017.webp" alt="Spa & Wellness" />
+            <div className="service-content">
+              <h3>Spa & Wellness</h3>
+              <p>Relax and rejuvenate with our luxury therapies.</p>
+              <button>Discover</button>
+            </div>
+          </div>
+
+          <div className="service-card">
+            <img src="https://i.pinimg.com/736x/16/61/96/166196fab4460609826b94b696cd4ada.jpg" alt="Luxury Bar" />
+            <div className="service-content">
+              <h3>Luxury Bar</h3>
+              <p>Premium drinks in a sophisticated ambiance.</p>
+              <button>Explore</button>
+            </div>
+          </div>
+
+          <div className="service-card">
+            <img src="https://civichotel.ca/wp-content/uploads/2018/08/meeting-slide3-1920x1179.jpg" alt="Events" />
+            <div className="service-content">
+              <h3>Meetings & Events</h3>
+              <p>Host corporate meetings and celebrations in style.</p>
+              <button>Book Now</button>
+            </div>
+          </div>
+
         </div>
       </section>
 
-      {/* Gallery Preview */}
+      {/* Gallery Section */}
       <section className="gallery-section">
-        <h2>Gallery</h2>
+        <h2 className="section-title">Our Gallery</h2>
+
         <div className="gallery-grid">
-          {Array.from({ length: 6 }).map((_, idx) => (
-            <div className="gallery-img" key={idx}>
-              <img 
-                src={`https://source.unsplash.com/400x300/?hotel,room,spa,restaurant,hyderabad,hotel${idx}`} 
-                alt="Hotel Gallery"
-              />
-            </div>
-          ))}
+          <div className="gallery-item">
+            <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/509170710.jpg?k=e597f74f8feb6e191cef5193a8cb93df14236de1a3f73353a44cdefd8f942bda&o=" alt="Hotel View" />
+          </div>
+
+          <div className="gallery-item">
+            <img src="https://www.wedezinestudio.com/blogs/wp-content/uploads/2025/03/485147271_979900657588824_258722554589890817_n.webp" alt="Luxury Room" />
+          </div>
+
+          <div className="gallery-item">
+            <img src="https://cdn.home-designing.com/wp-content/uploads/2023/02/dining-room-chandeliers.jpg" alt="Dining Area" />
+          </div>
+
+          <div className="gallery-item">
+            <img src="https://designthoughts.org/wp-content/uploads/2021/09/Picture4.jpg" alt="Swimming Pool" />
+          </div>
+
+          <div className="gallery-item">
+            <img src="https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2017/8/23/1/CI_Capella_Shanghai_Jian_Ye_Li-Lobby.jpg.rend.hgtvcom.791.594.85.suffix/1503534990218.webp" alt="Lobby" />
+          </div>
+
+          <div className="gallery-item">
+            <img src="https://cdn.prod.website-files.com/66456ff69b6aadbdb065af90/684abcc090cb758365ac977e_spa-entertainment-facility-korus.webp" alt="Spa Area" />
+          </div>
         </div>
       </section>
 
