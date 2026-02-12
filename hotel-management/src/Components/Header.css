@@ -1,152 +1,141 @@
-/* General Header */
-.premium-header {
-  background-color: #fff;
-  border-bottom: 1px solid #ddd;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  width: 100%;
+/* RESET */
+body {
+  margin: 0;
+  padding: 0;
 }
 
+/* MAIN HEADER */
+.modern-header {
+  position: absolute;   /* sits over hero */
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: transparent !important;
+  display: flex;
+  justify-content: center;
+  transition: top 0.4s ease;
+  z-index: 1000;
+}
+
+/* INNER CONTAINER */
 .header-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 15px 20px;
+  width: 100%;
+  max-width: 1400px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 20px 80px;
 }
 
-/* Logo */
+/* LOGO */
 .logo img {
-  height: 50px;
-  width: auto;
-  cursor: pointer;
+  height: 80px;
 }
 
-/* Desktop Navigation */
-.nav {
-  flex: 1;
-  margin-left: 40px;
-}
-
+/* NAVIGATION */
 .nav-menu {
   display: flex;
+  gap: 40px;
   list-style: none;
-  padding: 0;
   margin: 0;
-  gap: 25px;
-}
-
-.nav-item {
-  position: relative;
+  padding: 0;
 }
 
 .nav-link {
   text-decoration: none;
-  color: #222;
+  color: #fff;
   font-weight: 500;
-  transition: color 0.3s ease;
+  transition: 0.3s ease;
 }
 
 .nav-link:hover {
-  color: #007BFF;
+  color: #c8a96a;
 }
 
-/* CTA / Booking Button */
-.header-cta {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.book-btn {
-  background-color: #007BFF;
+/* CTA BUTTON */
+.modern-btn {
+  background: #c8a96a;
   color: #fff;
-  padding: 8px 18px;
+  padding: 10px 24px;
   border: none;
   border-radius: 4px;
-  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 500;
+  transition: 0.3s ease;
 }
 
-.book-btn:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
+.modern-btn:hover {
+  background: #a8844d;
 }
 
-.welcome-text {
-  font-size: 14px;
-  font-weight: 600;
-  color: #007BFF;
+/* BOOKING DROPDOWN */
+.booking-dropdown {
+  position: absolute;
+  right: 80px;
+  top: 90px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-radius: 10px;
+  padding: 1.5rem;
+  width: 300px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Hamburger Menu */
+/* FORM */
+.booking-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.booking-form label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+
+.booking-form input,
+.booking-form select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.booking-form button {
+  width: 100%;
+  padding: 0.7rem;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.booking-form button:hover {
+  background: #000;
+}
+
+/* HAMBURGER */
 .hamburger {
   display: none;
   flex-direction: column;
-  justify-content: space-between;
-  width: 22px;
-  height: 16px;
   cursor: pointer;
 }
 
 .hamburger span {
   height: 3px;
-  background-color: #222;
-  border-radius: 2px;
-  transition: all 0.3s ease;
+  width: 25px;
+  background: #fff;
+  margin: 4px 0;
 }
 
-.hamburger.open span:nth-child(1) {
-  transform: rotate(45deg) translate(4px, 4px);
-}
-
-.hamburger.open span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.open span:nth-child(3) {
-  transform: rotate(-45deg) translate(4px, -4px);
-}
-
-/* Mobile Menu */
+/* MOBILE MENU */
 .mobile-menu {
   display: none;
-  flex-direction: column;
-  background-color: #fff;
-  border-top: 1px solid #ddd;
 }
 
-.mobile-menu.active {
-  display: flex;
-}
-
-.mobile-menu ul {
-  list-style: none;
-  padding: 15px 20px;
-  margin: 0;
-}
-
-.mobile-menu li {
-  margin-bottom: 12px;
-}
-
-.mobile-menu li a {
-  text-decoration: none;
-  color: #222;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.mobile-menu li a:hover {
-  color: #007BFF;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
+/* RESPONSIVE */
+@media (max-width: 992px) {
   .nav {
     display: none;
   }
@@ -155,12 +144,28 @@
     display: flex;
   }
 
-  .header-cta {
-    display: none;
+  .mobile-menu {
+    display: block;
+    position: absolute;
+    top: 80px;
+    width: 100%;
+    background: rgba(0,0,0,0.95);
+    padding: 20px 0;
   }
 
-  .mobile-menu li a {
-    display: block;
-    width: 100%;
+  .mobile-menu ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+  }
+
+  .mobile-menu li {
+    margin: 15px 0;
+  }
+
+  .mobile-menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
   }
 }
