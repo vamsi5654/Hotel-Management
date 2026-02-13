@@ -19,7 +19,7 @@
 /* Text overlay */
 .hero-text {
   position: absolute;
-  top: 40px;
+  top: 120px;
   width: 100%;
   text-align: center;
   z-index: 10;
@@ -27,7 +27,7 @@
 
 /* 3D Text */
 .hero-title-3d {
-  font-size: 35px;
+  font-size: 40px;
   font-weight: 900;
   background: linear-gradient(45deg, #220808, #29031e);
   -webkit-background-clip: text;
@@ -36,8 +36,8 @@
   letter-spacing: 4px;
 
   text-shadow:
-    2px 2px 0 #e8e6eb,
-    4px 4px 15px rgba(0,0,0,0.6);
+    2px 2px 0 #cf781a,
+    4px 4px 15px rgba(219, 216, 218, 0.04);
 
   transform: perspective(600px) rotateX(12deg);
 }
