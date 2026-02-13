@@ -19,7 +19,6 @@ body {
   z-index: 1000;
 }
 
-
 /* INNER CONTAINER */
 .header-container {
   width: 100%;
@@ -139,23 +138,44 @@ body {
   margin-top: 10px;
   background: #f7f7f7;
   border-radius: 8px;
-  padding: 10px;
-  max-height: 300px;
+  padding: 15px;
+  max-height: 320px;
   overflow-y: auto;
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   z-index: 1002;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 /* ROOM BLOCK */
 .room-block {
-  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #ddd;
+  position: relative;
 }
 
 .room-block h4 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 0 0 5px 0;
   font-size: 0.95rem;
+}
+
+/* DELETE ROOM BUTTON */
+.delete-room-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 14px;
+  color: #ff4d4d;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
 /* COUNTER ROW */
@@ -202,15 +222,18 @@ body {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
+  gap: 10px;
 }
 
 .guest-actions button {
-  padding: 6px 12px;
+  flex: 1;
+  padding: 8px 0;
   border-radius: 5px;
   border: 1px solid #999;
   background: #fff;
   cursor: pointer;
   font-size: 0.85rem;
+  transition: 0.3s;
 }
 
 .guest-actions button:hover {
@@ -239,7 +262,6 @@ body {
 
 /* RESPONSIVE */
 @media (max-width: 992px) {
-
   /* Hide desktop navigation */
   .nav {
     display: none;
@@ -293,7 +315,7 @@ body {
 
   /* Limit guest dropdown height */
   .guest-dropdown {
-    max-height: 250px;
+    max-height: 280px;
   }
 
   /* Align counters side by side for mobile */
@@ -305,5 +327,11 @@ body {
   .counter button {
     width: 30px;
     height: 30px;
+  }
+
+  /* Stack Guest Actions buttons vertically on mobile */
+  .guest-actions {
+    flex-direction: column;
+    gap: 8px;
   }
 }

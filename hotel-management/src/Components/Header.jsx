@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
 import logo from "../assets/UrbanHotel.webp";
@@ -27,9 +27,7 @@ function Header() {
     { name: "Contact", path: "/contact" },
   ];
 
-  const guestRef = useRef(null);
-
-  // Hide header on scroll
+  // Header hide on scroll
   useEffect(() => {
     if (!isBookingPage) return;
     const handleScroll = () => {
@@ -41,32 +39,32 @@ function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isBookingPage, lastScroll]);
 
-  // Close guest dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (guestRef.current && !guestRef.current.contains(event.target)) {
-        setGuestDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [guestRef]);
-
-  // Update Guests
+  // Update adults/children count
   const updateGuest = (roomIndex, type, operation) => {
     const updatedRooms = [...rooms];
     if (operation === "inc") {
       if (updatedRooms[roomIndex][type] < 4) updatedRooms[roomIndex][type] += 1;
-    } else if (operation === "dec") {
-      if (type === "adults" && updatedRooms[roomIndex][type] === 1) return;
-      if (updatedRooms[roomIndex][type] > 0) updatedRooms[roomIndex][type] -= 1;
+    } else {
+      if (type === "adults" && updatedRooms[roomIndex][type] > 1) updatedRooms[roomIndex][type] -= 1;
+      if (type === "children" && updatedRooms[roomIndex][type] > 0) updatedRooms[roomIndex][type] -= 1;
     }
     setRooms(updatedRooms);
   };
 
+  // Add a new room
   const addRoom = () => setRooms([...rooms, { adults: 1, children: 0 }]);
-  const totalGuests = rooms.reduce((sum, room) => sum + room.adults + room.children, 0);
 
+  // Delete a room
+  const deleteRoom = (index) => {
+    if (rooms.length === 1) return; // Always keep at least one room
+    const updatedRooms = rooms.filter((_, i) => i !== index);
+    setRooms(updatedRooms);
+  };
+
+  // Total guests
+  const totalGuests = rooms.reduce((sum, r) => sum + r.adults + r.children, 0);
+
+  // Submit booking
   const handleNextClick = (e) => {
     e.preventDefault();
     if (!checkin || !checkout || totalGuests < 1) {
@@ -100,54 +98,44 @@ function Header() {
         </nav>
 
         <div className="header-cta">
-          <button
-            className="modern-btn"
-            onClick={() => setBookingOpen(!bookingOpen)}
-          >
+          <button className="modern-btn" onClick={() => setBookingOpen(!bookingOpen)}>
             Book Your Stay
           </button>
 
           {bookingOpen && (
-            <div className="booking-dropdown" style={{ zIndex: 9999 }}>
+            <div className="booking-dropdown">
               <form className="booking-form" onSubmit={handleNextClick}>
-                {/* Checkin */}
+                {/* Dates */}
                 <div className="form-group">
                   <label>Check-In</label>
-                  <input
-                    type="date"
-                    value={checkin}
-                    onChange={(e) => setCheckin(e.target.value)}
-                    required
-                  />
+                  <input type="date" value={checkin} onChange={e => setCheckin(e.target.value)} required />
                 </div>
-
-                {/* Checkout */}
                 <div className="form-group">
                   <label>Check-Out</label>
-                  <input
-                    type="date"
-                    value={checkout}
-                    onChange={(e) => setCheckout(e.target.value)}
-                    required
-                  />
+                  <input type="date" value={checkout} onChange={e => setCheckout(e.target.value)} required />
                 </div>
 
-                {/* Guests Section: show only if dates selected */}
+                {/* Guests & Rooms */}
                 {checkin && checkout && (
-                  <div className="form-group" ref={guestRef}>
+                  <div className="form-group">
                     <label>Guests & Rooms</label>
-                    <div
-                      className="guest-selector"
-                      onClick={() => setGuestDropdownOpen(!guestDropdownOpen)}
-                    >
-                      {totalGuests} Guest{totalGuests !== 1 ? "s" : ""}, {rooms.length} Room{rooms.length !== 1 ? "s" : ""}
+                    <div className="guest-selector" onClick={() => setGuestDropdownOpen(!guestDropdownOpen)}>
+                      {totalGuests} Guests, {rooms.length} Room{rooms.length > 1 ? "s" : ""}
                     </div>
 
                     {guestDropdownOpen && (
                       <div className="guest-dropdown">
                         {rooms.map((room, index) => (
                           <div key={index} className="room-block">
-                            <h4>Room {index + 1}</h4>
+                            <h4>
+                              Room {index + 1} 
+                              {rooms.length > 1 && (
+                                <button type="button" onClick={() => deleteRoom(index)} style={{ float: "right", color: "red", border: "none", background: "none", cursor: "pointer" }}>
+                                  ✕
+                                </button>
+                              )}
+                            </h4>
+
                             <div className="guest-row">
                               <span>Adults</span>
                               <div className="counter">
@@ -177,9 +165,7 @@ function Header() {
                   </div>
                 )}
 
-                <button type="submit" disabled={loading}>
-                  {loading ? "Next..." : "Select Room"}
-                </button>
+                <button type="submit" disabled={loading}>{loading ? "Next..." : "Select Room"}</button>
               </form>
             </div>
           )}
@@ -196,9 +182,7 @@ function Header() {
         <ul>
           {navItems.map((item, index) => (
             <li key={index}>
-              <Link to={item.path} onClick={() => setMobileMenuOpen(false)}>
-                {item.name}
-              </Link>
+              <Link to={item.path} onClick={() => setMobileMenuOpen(false)}>{item.name}</Link>
             </li>
           ))}
         </ul>
