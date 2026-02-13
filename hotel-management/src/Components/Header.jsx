@@ -11,6 +11,13 @@ function Header() {
 
   const [checkin, setCheckin] = useState("");
   const [checkout, setCheckout] = useState("");
+  // Get today's date in YYYY-MM-DD format
+const today = new Date();
+const formatDate = (date) => date.toISOString().split("T")[0];
+
+const minCheckin = formatDate(today);
+const minCheckout = checkin ? checkin : formatDate(today);
+
   const [loading, setLoading] = useState(false);
 
   const [rooms, setRooms] = useState([{ adults: 1, children: 0 }]);
@@ -106,14 +113,30 @@ function Header() {
             <div className="booking-dropdown">
               <form className="booking-form" onSubmit={handleNextClick}>
                 {/* Dates */}
-                <div className="form-group">
-                  <label>Check-In</label>
-                  <input type="date" value={checkin} onChange={e => setCheckin(e.target.value)} required />
-                </div>
-                <div className="form-group">
-                  <label>Check-Out</label>
-                  <input type="date" value={checkout} onChange={e => setCheckout(e.target.value)} required />
-                </div>
+                {/* Check-In */}
+<div className="form-group">
+  <label>Check-In</label>
+  <input
+    type="date"
+    value={checkin}
+    onChange={(e) => setCheckin(e.target.value)}
+    min={minCheckin}      // ✅ Prevent past check-in
+    required
+  />
+</div>
+
+{/* Check-Out */}
+<div className="form-group">
+  <label>Check-Out</label>
+  <input
+    type="date"
+    value={checkout}
+    onChange={(e) => setCheckout(e.target.value)}
+    min={minCheckout}     // ✅ Cannot be before check-in
+    required
+  />
+</div>
+
 
                 {/* Guests & Rooms */}
                 {checkin && checkout && (
