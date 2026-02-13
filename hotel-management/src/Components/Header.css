@@ -2,11 +2,12 @@
 body {
   margin: 0;
   padding: 0;
+  font-family: Arial, sans-serif;
 }
 
 /* MAIN HEADER */
 .modern-header {
-  position: absolute;   /* sits over hero */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -71,14 +72,15 @@ body {
 /* BOOKING DROPDOWN */
 .booking-dropdown {
   position: absolute;
-  right: 80px;
-  top: 90px;
+  right: 0;
+  top: 60px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
   border-radius: 10px;
   padding: 1.5rem;
-  width: 300px;
+  width: 320px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
 }
 
 /* FORM */
@@ -113,6 +115,104 @@ body {
 
 .booking-form button:hover {
   background: #000;
+}
+
+/* GUEST SELECTOR */
+.guest-selector {
+  padding: 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  background: #fff;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* GUEST DROPDOWN */
+.guest-dropdown {
+  margin-top: 10px;
+  background: #f7f7f7;
+  border-radius: 8px;
+  padding: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  z-index: 1002;
+}
+
+/* ROOM BLOCK */
+.room-block {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.room-block h4 {
+  margin: 0 0 5px 0;
+  font-size: 0.95rem;
+}
+
+/* COUNTER ROW */
+.guest-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.counter button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #999;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.counter span {
+  min-width: 20px;
+  text-align: center;
+}
+
+/* LIMIT COUNTERS */
+.counter button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* GUEST ACTIONS */
+.guest-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.guest-actions button {
+  padding: 6px 12px;
+  border-radius: 5px;
+  border: 1px solid #999;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.guest-actions button:hover {
+  background: #c8a96a;
+  color: #fff;
 }
 
 /* HAMBURGER */
@@ -151,6 +251,7 @@ body {
     width: 100%;
     background: rgba(0,0,0,0.95);
     padding: 20px 0;
+    z-index: 999;
   }
 
   .mobile-menu ul {
@@ -167,5 +268,27 @@ body {
     color: #fff;
     text-decoration: none;
     font-size: 18px;
+  }
+
+  /* Booking dropdown full width on mobile */
+  .booking-dropdown {
+    right: 10px;
+    width: calc(100% - 20px);
+  }
+
+  /* Limit guest dropdown height */
+  .guest-dropdown {
+    max-height: 250px;
+  }
+
+  /* Align counters side by side for mobile */
+  .guest-row {
+    justify-content: space-between;
+    margin: 8px 0;
+  }
+
+  .counter button {
+    width: 30px;
+    height: 30px;
   }
 }
