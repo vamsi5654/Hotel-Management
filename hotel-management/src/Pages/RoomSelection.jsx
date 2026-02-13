@@ -1,15 +1,18 @@
 import "./RoomSelection.css";
 import React, { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function RoomSelection() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
 
-  // Get data from URL query parameters
-  const checkin = searchParams.get("checkin");
-  const checkout = searchParams.get("checkout");
-  const guests = searchParams.get("guests");
+  // ✅ Get data from Header state
+  const { checkin, checkout, rooms } = location.state || { rooms: [] };
+
+  // Calculate total guests
+  const totalAdults = rooms.reduce((sum, room) => sum + room.adults, 0);
+  const totalChildren = rooms.reduce((sum, room) => sum + room.children, 0);
+  const totalGuests = totalAdults + totalChildren;
 
   const [roomType, setRoomType] = useState("Deluxe Room");
   const [fullName, setFullName] = useState("");
@@ -28,7 +31,7 @@ function RoomSelection() {
 
     // Navigate to account page with state
     navigate(`/account/${bookingId}`, {
-      state: { roomType, checkin, checkout, guests, fullName },
+      state: { roomType, checkin, checkout, rooms, fullName },
     });
   };
 
@@ -46,7 +49,11 @@ function RoomSelection() {
             <strong>Check-Out:</strong> {checkout || "N/A"}
           </p>
           <p>
-            <strong>Guests:</strong> {guests || "N/A"}
+            <strong>Guests:</strong> {totalGuests} (
+            {totalAdults} Adults, {totalChildren} Children)
+          </p>
+          <p>
+            <strong>Rooms:</strong> {rooms.length}
           </p>
         </div>
 
