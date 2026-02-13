@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
 import logo from "../assets/UrbanHotel.webp";
@@ -7,36 +7,18 @@ function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const [lastScroll, setLastScroll] = useState(0);
-  const [bookingOpen, setBookingOpen] = useState(false); // dropdown toggle
+  const [bookingOpen, setBookingOpen] = useState(false);
 
   const [checkin, setCheckin] = useState("");
   const [checkout, setCheckout] = useState("");
-  const [guests, setGuests] = useState("1 Guest");
   const [loading, setLoading] = useState(false);
+
+  const [rooms, setRooms] = useState([{ adults: 1, children: 0 }]);
+  const [guestDropdownOpen, setGuestDropdownOpen] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
-  const handleNextClick = (e)=> {
-    e.preventDefault(); // ✅ prevent page reload
-    if (!checkin || !checkout || guests < 1) {
-      alert("Please fill all fields correctly.");
-      return;
-    }
-
-    setLoading(true);
-
-    // Navigate with query params
-    navigate(
-      `/room-selection?checkin=${checkin}&checkout=${checkout}&guests=${guests}`
-    );
-  };
-
-
-
-
-
   const isBookingPage = location.pathname === "/checking-in-out";
-  
 
   const navItems = [
     { name: "Home", path: "/" },
@@ -45,24 +27,54 @@ function Header() {
     { name: "Contact", path: "/contact" },
   ];
 
+  const guestRef = useRef(null);
+
+  // Hide header on scroll
   useEffect(() => {
     if (!isBookingPage) return;
-
     const handleScroll = () => {
       const currentScroll = window.pageYOffset;
       setShowHeader(currentScroll < lastScroll || currentScroll < 50);
       setLastScroll(currentScroll);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isBookingPage, lastScroll]);
 
-  const handleBookingSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
+  // Close guest dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (guestRef.current && !guestRef.current.contains(event.target)) {
+        setGuestDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [guestRef]);
 
-    navigate("/select-room", { state: { checkin, checkout, guests } });
+  // Update Guests
+  const updateGuest = (roomIndex, type, operation) => {
+    const updatedRooms = [...rooms];
+    if (operation === "inc") {
+      if (updatedRooms[roomIndex][type] < 4) updatedRooms[roomIndex][type] += 1;
+    } else if (operation === "dec") {
+      if (type === "adults" && updatedRooms[roomIndex][type] === 1) return;
+      if (updatedRooms[roomIndex][type] > 0) updatedRooms[roomIndex][type] -= 1;
+    }
+    setRooms(updatedRooms);
+  };
+
+  const addRoom = () => setRooms([...rooms, { adults: 1, children: 0 }]);
+  const totalGuests = rooms.reduce((sum, room) => sum + room.adults + room.children, 0);
+
+  const handleNextClick = (e) => {
+    e.preventDefault();
+    if (!checkin || !checkout || totalGuests < 1) {
+      alert("Please fill all fields correctly.");
+      return;
+    }
+    setLoading(true);
+    navigate("/room-selection", { state: { checkin, checkout, rooms } });
   };
 
   return (
@@ -81,71 +93,99 @@ function Header() {
           <ul className="nav-menu">
             {navItems.map((item, index) => (
               <li key={index} className="nav-item">
-                <Link to={item.path} className="nav-link">
-                  {item.name}
-                </Link>
+                <Link to={item.path} className="nav-link">{item.name}</Link>
               </li>
             ))}
           </ul>
         </nav>
 
-<div className="header-cta">
-  <button
-    className="modern-btn"
-    onClick={() => setBookingOpen(!bookingOpen)}
-  >
-    Book Your Stay
-  </button>
-
-  {bookingOpen && (
-    <div className="booking-dropdown">
-      <form className="booking-form" onSubmit={handleNextClick}>
-        <div className="form-group">
-          <label>Check-In</label>
-          <input
-            type="date"
-            value={checkin}
-            onChange={(e) => setCheckin(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Check-Out</label>
-          <input
-            type="date"
-            value={checkout}
-            onChange={(e) => setCheckout(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Guests</label>
-          <select
-            value={guests}
-            onChange={(e) => setGuests(e.target.value)}
+        <div className="header-cta">
+          <button
+            className="modern-btn"
+            onClick={() => setBookingOpen(!bookingOpen)}
           >
-            <option>1 Guest</option>
-            <option>2 Guests</option>
-            <option>3 Guests</option>
-            <option>4 Guests</option>
-          </select>
+            Book Your Stay
+          </button>
+
+          {bookingOpen && (
+            <div className="booking-dropdown" style={{ zIndex: 9999 }}>
+              <form className="booking-form" onSubmit={handleNextClick}>
+                {/* Checkin */}
+                <div className="form-group">
+                  <label>Check-In</label>
+                  <input
+                    type="date"
+                    value={checkin}
+                    onChange={(e) => setCheckin(e.target.value)}
+                    required
+                  />
+                </div>
+
+                {/* Checkout */}
+                <div className="form-group">
+                  <label>Check-Out</label>
+                  <input
+                    type="date"
+                    value={checkout}
+                    onChange={(e) => setCheckout(e.target.value)}
+                    required
+                  />
+                </div>
+
+                {/* Guests Section: show only if dates selected */}
+                {checkin && checkout && (
+                  <div className="form-group" ref={guestRef}>
+                    <label>Guests & Rooms</label>
+                    <div
+                      className="guest-selector"
+                      onClick={() => setGuestDropdownOpen(!guestDropdownOpen)}
+                    >
+                      {totalGuests} Guest{totalGuests !== 1 ? "s" : ""}, {rooms.length} Room{rooms.length !== 1 ? "s" : ""}
+                    </div>
+
+                    {guestDropdownOpen && (
+                      <div className="guest-dropdown">
+                        {rooms.map((room, index) => (
+                          <div key={index} className="room-block">
+                            <h4>Room {index + 1}</h4>
+                            <div className="guest-row">
+                              <span>Adults</span>
+                              <div className="counter">
+                                <button type="button" onClick={() => updateGuest(index, "adults", "dec")}>-</button>
+                                <span>{room.adults}</span>
+                                <button type="button" onClick={() => updateGuest(index, "adults", "inc")}>+</button>
+                              </div>
+                            </div>
+
+                            <div className="guest-row">
+                              <span>Children</span>
+                              <div className="counter">
+                                <button type="button" onClick={() => updateGuest(index, "children", "dec")}>-</button>
+                                <span>{room.children}</span>
+                                <button type="button" onClick={() => updateGuest(index, "children", "inc")}>+</button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+
+                        <div className="guest-actions">
+                          <button type="button" onClick={addRoom}>Add Room</button>
+                          <button type="button" onClick={() => setGuestDropdownOpen(false)}>Apply</button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <button type="submit" disabled={loading}>
+                  {loading ? "Next..." : "Select Room"}
+                </button>
+              </form>
+            </div>
+          )}
         </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Next..." : "Select Room"}
-        </button>
-      </form>
-    </div>
-  )}
-</div>
-
-
-        <div
-          className={`hamburger ${mobileMenuOpen ? "open" : ""}`}
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
+        <div className={`hamburger ${mobileMenuOpen ? "open" : ""}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
           <span></span>
           <span></span>
           <span></span>
