@@ -22,6 +22,7 @@ const minCheckout = checkin ? checkin : formatDate(today);
 
   const [rooms, setRooms] = useState([{ adults: 1, children: 0 }]);
   const [guestDropdownOpen, setGuestDropdownOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -45,6 +46,14 @@ const minCheckout = checkin ? checkin : formatDate(today);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isBookingPage, lastScroll]);
+
+  // Add background when user scrolls (for transparent -> solid header)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.pageYOffset > 10);
+    window.addEventListener("scroll", onScroll);
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Update adults/children count
   const updateGuest = (roomIndex, type, operation) => {
@@ -84,7 +93,7 @@ const minCheckout = checkin ? checkin : formatDate(today);
 
   return (
     <header
-      className={`modern-header ${isBookingPage ? "booking-header" : ""}`}
+      className={`modern-header ${scrolled ? "scrolled" : ""} ${isBookingPage ? "booking-header" : ""}`}
       style={{ top: showHeader ? "0" : "-100px" }}
     >
       <div className="header-container">
@@ -181,7 +190,6 @@ const minCheckout = checkin ? checkin : formatDate(today);
 
                         <div className="guest-actions">
                           <button type="button" onClick={addRoom}>Add Room</button>
-                          <button type="button" onClick={() => setGuestDropdownOpen(false)}>Apply</button>
                         </div>
                       </div>
                     )}

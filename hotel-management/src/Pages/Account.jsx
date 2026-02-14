@@ -13,6 +13,7 @@ const sampleRoomService = [
 const sampleFood = [
   { id: 1, name: "Burger", price: 8 },
   { id: 2, name: "Pizza", price: 12 },
+  { id: 2, name: "Coffee", price: 20 },
 ];
 
 const sampleRunnerService = [

@@ -8,6 +8,7 @@ import Footer from "./Components/Footer";
 import Home from "./Pages/Home";
 import RoomSelection from "./Pages/RoomSelection";
 import Account from "./Pages/Account"; // <-- import Account page
+import Loyalty from "./Pages/Loyalty";
 
 function App() {
   const location = useLocation();
@@ -39,6 +40,9 @@ function App() {
 
                         {/* Room selection page */}
             <Route path="/room-selection" element={<RoomSelection />} />
+
+            {/* Loyalty page */}
+            <Route path="/loyalty-benefits" element={<Loyalty />} />
 
             {/* Dynamic account page */}
             <Route path="/account/:bookingId" element={<Account />} />
