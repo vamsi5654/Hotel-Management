@@ -18,11 +18,13 @@ function RoomSelection() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [idProof, setIdProof] = useState(null);
+  const [idProof, setIdProof] = useState([]);
 
   const handleConfirmRoom = () => {
-    if (!fullName || !email || !phone || !idProof) {
-      alert("Please fill in all required details and upload ID proof.");
+    if (!fullName || !email || !phone || !idProof || idProof.length < totalGuests) {
+      alert(
+        `Please fill in all required details and upload ID proof for each of the ${totalGuests} guest(s).`
+      );
       return;
     }
 
@@ -94,11 +96,23 @@ function RoomSelection() {
               onChange={(e) => setPhone(e.target.value)}
             />
 
+            <label>ID Proof (Front & Back)</label>
             <input
               type="file"
-              onChange={(e) => setIdProof(e.target.files[0])}
-              aria-label="Upload ID Proof"
+              multiple
+              onChange={(e) => setIdProof(Array.from(e.target.files))}
+              aria-label="Upload ID Proofs (Front and Back)"
             />
+
+            <div className="file-info">
+              {idProof.length > 0 && (
+                <ul>
+                  {idProof.map((file, idx) => (
+                    <li key={idx}>{file.name}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
 
           <button className="confirm-btn" onClick={handleConfirmRoom}>
