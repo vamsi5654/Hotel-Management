@@ -14,6 +14,7 @@ const Loyalty = () => {
   // UI state: whether to show upgrade modal and sign-in modal
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
+  const [isJoinMode, setIsJoinMode] = useState(false);
 
   // Effect: example timer to trigger re-render/update (placeholder)
   useEffect(() => {
@@ -44,11 +45,13 @@ const Loyalty = () => {
 
   // Handlers: join and sign-in button actions
   const handleJoin = () => {
-    // open sign-in modal to encourage sign-in / create account flow
+    // open modal in Join mode
+    setIsJoinMode(true);
     setShowSignIn(true);
   };
 
   const handleSignIn = () => {
+    setIsJoinMode(false);
     setShowSignIn(true);
   };
 
@@ -129,6 +132,7 @@ const Loyalty = () => {
       {/* Sign-in modal component included inline for this page */}
       <SignInModal
         isOpen={showSignIn}
+        isJoin={isJoinMode}
         onClose={() => setShowSignIn(false)}
         onSwitchToRegister={() => {
           // close modal and optionally scroll to a register section (if exists)
@@ -142,7 +146,7 @@ const Loyalty = () => {
 };
 
 // Inline SignInModal component (keeps JSX in same file; styles appended to Loyalty.css)
-function SignInModal({ isOpen, onClose, onSwitchToRegister }) {
+function SignInModal({ isOpen, onClose, onSwitchToRegister, isJoin }) {
   const overlayRef = useRef(null);
   const firstInputRef = useRef(null);
   const previouslyFocused = useRef(null);
@@ -184,7 +188,7 @@ function SignInModal({ isOpen, onClose, onSwitchToRegister }) {
     >
       <div className="sr-modal" role="document">
         <div className="sr-modal-header">
-          <h3>Sign in to Infinity Rewards</h3>
+          <h3>{isJoin ? "Join Infinity Rewards" : "Sign in to Infinity Rewards"}</h3>
           <button className="sr-modal-close" onClick={onClose} aria-label="Close">
             ×
           </button>
@@ -203,9 +207,19 @@ function SignInModal({ isOpen, onClose, onSwitchToRegister }) {
             }}
           >
             <label className="sr-field">
-              <span className="sr-label">Email</span>
+              <span className="sr-label">Full Name</span>
               <input
                 ref={firstInputRef}
+                type="text"
+                name="fullName"
+                required
+                autoComplete="name"
+              />
+            </label>
+
+            <label className="sr-field">
+              <span className="sr-label">Email</span>
+              <input
                 type="email"
                 name="email"
                 required
@@ -214,28 +228,45 @@ function SignInModal({ isOpen, onClose, onSwitchToRegister }) {
             </label>
 
             <label className="sr-field">
-              <span className="sr-label">Password</span>
-              <input type="password" name="password" required autoComplete="current-password" />
+              <span className="sr-label">Phone Number</span>
+              <input
+                type="tel"
+                name="phone"
+                required
+                autoComplete="tel"
+              />
+            </label>
+
+            <label className="sr-field">
+              <span className="sr-label">Date of Birth</span>
+              <input
+                type="date"
+                name="dob"
+                required
+                autoComplete="bday"
+              />
             </label>
 
             <div className="sr-actions">
-              <button type="submit" className="sr-btn sr-btn-primary">Sign In</button>
-              <button
-                type="button"
-                className="sr-btn sr-btn-ghost"
-                onClick={() => {
-                  onClose();
-                  onSwitchToRegister?.();
-                }}
-              >
-                Create account
-              </button>
+              <button type="submit" className="sr-btn sr-btn-primary">{isJoin ? "Join" : "Sign In"}</button>
+              {!isJoin && (
+                <button
+                  type="button"
+                  className="sr-btn sr-btn-ghost"
+                  onClick={() => {
+                    onClose();
+                    onSwitchToRegister?.();
+                  }}
+                >
+                  Create account
+                </button>
+              )}
             </div>
           </form>
         </div>
 
         <div className="sr-modal-footer">
-          <small>Already a member? Use the form above to sign in.</small>
+          <small>{isJoin ? "Already a member? Use the Sign in button on the page." : "Already a member? Use the form above to sign in."}</small>
         </div>
       </div>
     </div>
