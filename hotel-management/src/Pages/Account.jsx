@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // Only importing what is needed
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./Account.css";
 
@@ -13,7 +13,7 @@ const sampleRoomService = [
 const sampleFood = [
   { id: 1, name: "Burger", price: 8 },
   { id: 2, name: "Pizza", price: 12 },
-  { id: 2, name: "Coffee", price: 20 },
+  { id: 3, name: "Coffee", price: 4 },
 ];
 
 const sampleRunnerService = [
@@ -106,7 +106,12 @@ function Account() {
     setCart(newCart);
   };
 
-  const total = cart.reduce((acc, item) => acc + item.finalPrice, 0); // Cart total
+  const total = cart.reduce(
+    (acc, item) => acc + (typeof item.finalPrice === "number" ? item.finalPrice : item.price || 0),
+    0
+  );
+
+  const fmt = new Intl.NumberFormat(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 2 });
 
   // -------------------- CHECKOUT --------------------
   const handleCheckout = async () => {
@@ -130,105 +135,142 @@ function Account() {
   };
 
   // -------------------- RENDER --------------------
-  if (loading) return <p>Loading cart...</p>;
+  if (loading)
+    return (
+      <div className="account-page">
+        <h1>Welcome to Urban Hotel</h1>
+        <p className="loading">Loading cart...</p>
+      </div>
+    );
 
   return (
     <div className="account-page">
-      <h1>Welcome to Urban Hotel</h1>
+      <header className="account-header">
+        <h1>Welcome to Urban Hotel</h1>
+        <p className="sub">Booking: {bookingId || "—"}</p>
+      </header>
 
-      {/* TABS */}
-      <div className="tabs">
-        {["Room Service", "Food & Beverages", "Shop"].map((tab) => (
-          <button
-            key={tab}
-            className={activeTab === tab ? "active" : ""}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
-
-      {/* TAB CONTENT */}
-      <div className="tab-content">
-        {activeTab === "Room Service" && (
-          <ul>
-            {roomService.map((item) => (
-              <li key={item.id}>
-                {item.name} - ${item.price}{" "}
-                <button onClick={() => addToCart(item, "Room Service")}>Add</button>
-              </li>
+      <div className="account-grid">
+        <main className="content-area">
+          <div className="tabs">
+            {["Room Service", "Food & Beverages", "Shop"].map((tab) => (
+              <button
+                key={tab}
+                className={activeTab === tab ? "active" : ""}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab}
+              </button>
             ))}
-          </ul>
-        )}
+          </div>
 
-        {activeTab === "Food & Beverages" && (
-          <>
-            <h3>Regular Food & Beverages</h3>
-            <ul>
-              {foodMenu.map((item) => (
-                <li key={item.id}>
-                  {item.name} - ${item.price}{" "}
-                  <button onClick={() => addToCart(item, "Food & Beverages")}>Add</button>
-                </li>
-              ))}
-            </ul>
+          <section className="tab-content">
+            {activeTab === "Room Service" && (
+              <div className="items-grid">
+                {roomService.map((item) => (
+                  <article className="item-card" key={item.id}>
+                    <div>
+                      <h4>{item.name}</h4>
+                      <div className="meta">{fmt.format(item.price)}</div>
+                    </div>
+                    <button onClick={() => addToCart(item, "Room Service")}>Add</button>
+                  </article>
+                ))}
+              </div>
+            )}
 
-            <h3>Runner Service (Extra Charges Apply)</h3>
-            <ul>
-              {runnerService.map((item) => (
-                <li key={item.id}>
-                  {item.name} - ${item.price} + ${item.extraCharge} service fee{" "}
-                  <button onClick={() => addToCart(item, "Runner Service", true)}>Add</button>
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
+            {activeTab === "Food & Beverages" && (
+              <>
+                <h3 className="section-title">Regular Food & Beverages</h3>
+                <div className="items-grid">
+                  {foodMenu.map((item) => (
+                    <article className="item-card" key={item.id}>
+                      <div>
+                        <h4>{item.name}</h4>
+                        <div className="meta">{fmt.format(item.price)}</div>
+                      </div>
+                      <button onClick={() => addToCart(item, "Food & Beverages")}>Add</button>
+                    </article>
+                  ))}
+                </div>
 
-        {activeTab === "Shop" && (
-          <ul>
-            {shopItems.map((item) => (
-              <li key={item.id}>
-                {item.name} - ${item.price}{" "}
-                <button onClick={() => addToCart(item, "Shop")}>Add</button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+                <h3 className="section-title">Runner Service (Extra Charges Apply)</h3>
+                <div className="items-grid">
+                  {runnerService.map((item) => (
+                    <article className="item-card" key={item.id}>
+                      <div>
+                        <h4>{item.name}</h4>
+                        <div className="meta">
+                          {fmt.format(item.price)} + {fmt.format(item.extraCharge)} service fee
+                        </div>
+                      </div>
+                      <button onClick={() => addToCart(item, "Runner Service", true)}>Add</button>
+                    </article>
+                  ))}
+                </div>
+              </>
+            )}
 
-      {/* FLOATING CART */}
-      <div className="cart">
-        <h2>Cart</h2>
-        {cart.length === 0 ? (
-          <p>Cart is empty.</p>
-        ) : (
-          <ul>
-            {cart.map((item, index) => (
-              <li key={index}>
-                {item.name} ({item.type}) - ${item.finalPrice}{" "}
-                <button onClick={() => removeFromCart(index)}>Remove</button>
-              </li>
-            ))}
-          </ul>
-        )}
-        <h3>Total: ${total}</h3>
-        {cart.length > 0 && (
-          <button onClick={handleCheckout} disabled={checkoutLoading}>
-            {checkoutLoading ? "Processing..." : "Place Order"}
-          </button>
-        )}
+            {activeTab === "Shop" && (
+              <div className="items-grid">
+                {shopItems.map((item) => (
+                  <article className="item-card" key={item.id}>
+                    <div>
+                      <h4>{item.name}</h4>
+                      <div className="meta">{fmt.format(item.price)}</div>
+                    </div>
+                    <button onClick={() => addToCart(item, "Shop")}>Add</button>
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
+        </main>
+
+        <aside className="sidebar">
+          <div className="cart">
+            <h2>Cart</h2>
+            {cart.length === 0 ? (
+              <p className="empty">Cart is empty.</p>
+            ) : (
+              <ul>
+                {cart.map((item, index) => (
+                  <li key={index} className="cart-item">
+                    <div>
+                      <div className="name">{item.name}</div>
+                      <div className="type">{item.type}</div>
+                    </div>
+                    <div className="right">
+                      <div className="price">{fmt.format(item.finalPrice ?? item.price)}</div>
+                      <button className="remove" onClick={() => removeFromCart(index)}>
+                        Remove
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <div className="cart-footer">
+              <div className="total">
+                <span>Total</span>
+                <strong>{fmt.format(total)}</strong>
+              </div>
+              <button className="checkout" onClick={handleCheckout} disabled={checkoutLoading || cart.length === 0}>
+                {checkoutLoading ? "Processing..." : "Place Order"}
+              </button>
+            </div>
+          </div>
+        </aside>
       </div>
 
       {/* RUNNER SERVICE CONFIRM POPUP */}
       {runnerConfirmItem && (
-        <div className="runner-confirm-popup">
+        <div className="runner-confirm-popup" role="dialog" aria-modal="true">
           <div className="popup-content">
             <h3>Confirm Runner Service</h3>
             <p>
-              You are about to add <strong>{runnerConfirmItem.name}</strong> with an extra service fee of $
-              {runnerConfirmItem.extraCharge}.
+              You are about to add <strong>{runnerConfirmItem.name}</strong> with an extra service fee of {fmt.format(runnerConfirmItem.extraCharge)}.
             </p>
             <div className="popup-buttons">
               <button onClick={confirmRunnerService}>Confirm</button>
