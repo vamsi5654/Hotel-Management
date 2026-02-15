@@ -6,32 +6,62 @@ function RoomSelection() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ Get data from Header state
+  // ✅ Get booking data passed from previous page (Header)
   const { checkin, checkout, rooms } = location.state || { rooms: [] };
 
-  // Calculate total guests
+  // ✅ Calculate total guests dynamically
   const totalAdults = rooms.reduce((sum, room) => sum + room.adults, 0);
   const totalChildren = rooms.reduce((sum, room) => sum + room.children, 0);
   const totalGuests = totalAdults + totalChildren;
 
+  // ✅ Room type selection state
   const [roomType, setRoomType] = useState("Deluxe Room");
+
+  // ✅ Guest personal details state
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+
+  // ✅ Store multiple uploaded ID proofs
   const [idProof, setIdProof] = useState([]);
 
+  // ✅ Handle ID file upload (APPENDS instead of replacing)
+  const handleIdUpload = (e) => {
+    const newFiles = Array.from(e.target.files);
+
+    // Append new files to previous uploaded files
+    setIdProof((prevFiles) => [...prevFiles, ...newFiles]);
+
+    // Reset input value so same file can be uploaded again if needed
+    e.target.value = null;
+  };
+
+  // ✅ Remove individual uploaded ID
+  const handleRemoveFile = (indexToRemove) => {
+    setIdProof((prevFiles) =>
+      prevFiles.filter((_, index) => index !== indexToRemove)
+    );
+  };
+
+  // ✅ Confirm booking button handler
   const handleConfirmRoom = () => {
-    if (!fullName || !email || !phone || !idProof || idProof.length < totalGuests) {
+    // Validation check
+    if (!fullName || !email || !phone) {
+      alert("Please fill in all guest details.");
+      return;
+    }
+
+    if (idProof.length < totalGuests) {
       alert(
-        `Please fill in all required details and upload ID proof for each of the ${totalGuests} guest(s).`
+        `Please upload ID proof for each of the ${totalGuests} guest(s).`
       );
       return;
     }
 
-    // Mock booking ID
+    // Generate mock booking ID
     const bookingId = "BK" + Math.floor(Math.random() * 100000);
 
-    // Navigate to account page with state
+    // Navigate to Account page with booking details
     navigate(`/account/${bookingId}`, {
       state: { roomType, checkin, checkout, rooms, fullName },
     });
@@ -42,6 +72,8 @@ function RoomSelection() {
       <div className="overlay"></div>
 
       <div className="room-wrapper">
+
+        {/* ✅ BOOKING SUMMARY SECTION */}
         <div className="booking-summary glass">
           <h2>Your Stay</h2>
           <p>
@@ -59,9 +91,11 @@ function RoomSelection() {
           </p>
         </div>
 
+        {/* ✅ ROOM SELECTION CARD */}
         <div className="room-card glass">
           <h1>Select Your Room</h1>
 
+          {/* ✅ ROOM TYPE DROPDOWN */}
           <label>Room Type</label>
           <select
             value={roomType}
@@ -72,9 +106,11 @@ function RoomSelection() {
             <option value="Suite">Luxury Suite – ₹14,999</option>
           </select>
 
+          {/* ✅ GUEST DETAILS SECTION */}
           <div className="guest-section">
             <h3>Guest Details</h3>
 
+            {/* Full Name */}
             <input
               type="text"
               placeholder="Full Name"
@@ -82,6 +118,7 @@ function RoomSelection() {
               onChange={(e) => setFullName(e.target.value)}
             />
 
+            {/* Email */}
             <input
               type="email"
               placeholder="Email Address"
@@ -89,6 +126,7 @@ function RoomSelection() {
               onChange={(e) => setEmail(e.target.value)}
             />
 
+            {/* Phone */}
             <input
               type="tel"
               placeholder="Phone Number"
@@ -96,25 +134,37 @@ function RoomSelection() {
               onChange={(e) => setPhone(e.target.value)}
             />
 
-            <label>ID Proof (Front & Back)</label>
+            {/* ✅ ID Upload Section */}
+            <label>Upload ID Proof (One by One Allowed)</label>
             <input
               type="file"
               multiple
-              onChange={(e) => setIdProof(Array.from(e.target.files))}
-              aria-label="Upload ID Proofs (Front and Back)"
+              onChange={handleIdUpload}
+              aria-label="Upload ID Proofs"
             />
 
+            {/* ✅ Display Uploaded Files */}
             <div className="file-info">
               {idProof.length > 0 && (
                 <ul>
                   {idProof.map((file, idx) => (
-                    <li key={idx}>{file.name}</li>
+                    <li key={idx}>
+                      {file.name}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveFile(idx)}
+                        style={{ marginLeft: "10px", color: "red" }}
+                      >
+                        Remove
+                      </button>
+                    </li>
                   ))}
                 </ul>
               )}
             </div>
           </div>
 
+          {/* ✅ CONFIRM BUTTON */}
           <button className="confirm-btn" onClick={handleConfirmRoom}>
             Confirm & Continue
           </button>

@@ -1,274 +1,179 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import "./Loyalty.css";
 
-// ...existing code...
-const Loyalty = () => {
-  // State: loyalty data (tier, stays, points)
-  const [loyaltyData, setLoyaltyData] = useState({
-    tier: "Gold",
-    totalStays: 18,
-    nextTierAt: 30,
-    points: 12400
-  });
+/* =====================================================
+   LOYALTY PAGE WITH SIGN IN / JOIN / DASHBOARD
+   ===================================================== */
 
-  // UI state: whether to show upgrade modal and sign-in modal
-  const [showUpgrade, setShowUpgrade] = useState(false);
-  const [showSignIn, setShowSignIn] = useState(false);
-  const [isJoinMode, setIsJoinMode] = useState(false);
+function Loyalty() {
+  const [view, setView] = useState("home");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Effect: example timer to trigger re-render/update (placeholder)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoyaltyData(prev => ({ ...prev }));
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
+  /* ===========================
+     SIGN IN HANDLER
+  ============================ */
+  const handleSignIn = (e) => {
+    e.preventDefault();
 
-  // Computed values: progress toward next tier (0-100)
-  const progress = Math.max(
-    0,
-    Math.min(100, (loyaltyData.totalStays / loyaltyData.nextTierAt) * 100)
-  );
-
-  // Static data: benefit rows for the benefits table
-  const benefitRows = [
-    { name: "Free WiFi", silver: "✓", gold: "✓", platinum: "✓", plus: "✓" },
-    { name: "Member Exclusive Rates", silver: "✓", gold: "✓", platinum: "✓", plus: "✓" },
-    { name: "Bonus Points", silver: "10%", gold: "20%", platinum: "30%", plus: "40%" },
-    { name: "Priority Check-in", silver: "—", gold: "✓", platinum: "✓", plus: "✓" },
-    { name: "Room Upgrade", silver: "—", gold: "✓", platinum: "✓", plus: "✓" },
-    { name: "Late Checkout", silver: "—", gold: "✓", platinum: "✓", plus: "✓" },
-    { name: "Free Breakfast", silver: "—", gold: "—", platinum: "✓", plus: "✓" },
-    { name: "Suite Upgrade", silver: "—", gold: "—", platinum: "✓", plus: "✓" },
-    { name: "Lounge Access", silver: "—", gold: "—", platinum: "—", plus: "✓" }
-  ];
-
-  // Handlers: join and sign-in button actions
-  const handleJoin = () => {
-    // open modal in Join mode
-    setIsJoinMode(true);
-    setShowSignIn(true);
+    // Normally validate from backend here
+    setIsLoggedIn(true);
+    setView("dashboard");
   };
 
-  const handleSignIn = () => {
-    setIsJoinMode(false);
-    setShowSignIn(true);
+  /* ===========================
+     JOIN HANDLER
+  ============================ */
+  const handleJoin = (e) => {
+    e.preventDefault();
+
+    // Normally save to backend here
+    setIsLoggedIn(true);
+    setView("dashboard");
   };
 
-  // Render: main component layout (single parent container)
+  /* ===========================
+     LOGOUT HANDLER
+  ============================ */
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setView("home");
+  };
+
   return (
-    <div className="loyalty-container">
-      {/* Header: points display */}
-      <div className="loyalty-header">
-        <h2>{loyaltyData.points.toLocaleString()}</h2>
-        <p>Available Points</p>
-      </div>
+    <div className="loyalty-page">
 
-      {/* Progress bar: visual progress toward next tier */}
-      <div className="progress-bar">
-        <div style={{ width: `${progress}%` }}></div>
-      </div>
+      {/* ===============================
+          HOME VIEW
+      ================================ */}
+      {view === "home" && (
+        <div className="loyalty-hero">
+          <h1>Infinity Rewards</h1>
+          <p className="subtitle">
+            Experience luxury beyond stays.
+          </p>
 
-      {/* Benefits section: table of tier benefits */}
-      <div className="benefits-section">
-        <h3>Your Benefits</h3>
-        <div className="benefits-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Benefit</th>
-                <th>Silver</th>
-                <th>Gold</th>
-                <th>Platinum</th>
-                <th>Platinum Plus</th>
-              </tr>
-            </thead>
-            <tbody>
-              {benefitRows.map((r, i) => (
-                <tr key={i}>
-                  <td>{r.name}</td>
-                  <td className="center">{r.silver}</td>
-                  <td className="center">{r.gold}</td>
-                  <td className="center">{r.platinum}</td>
-                  <td className="center">{r.plus}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+          <div className="hero-buttons">
+            <button 
+              className="btn btn-primary"
+              onClick={() => setView("signin")}
+            >
+              Sign In
+            </button>
 
-      {/* Call-to-action: join or sign in */}
-      <div className="join-cta">
-        <h3>Not a member yet? Join today.</h3>
-        <p>
-          Exclusive rates, tier benefits, free room nights, and much more... Sign
-          up today for free.
-        </p>
-        <div className="cta-buttons">
-          <button className="cta-btn join-btn" onClick={handleJoin}>
-            Join
-          </button>
-          <button className="cta-btn signin-btn" onClick={handleSignIn}>
-            Sign in
-          </button>
-        </div>
-      </div>
-
-      {/* Redeem action */}
-      <button className="redeem-btn">Redeem Points</button>
-
-      {/* Upgrade modal: shown when showUpgrade is true */}
-      {showUpgrade && (
-        <div className="upgrade-modal">
-          <div className="upgrade-content">
-            <h2>Congratulations!</h2>
-            <p>You've been upgraded to {loyaltyData.tier} Tier</p>
-            <button onClick={() => setShowUpgrade(false)}>Close</button>
+            <button 
+              className="btn btn-outline"
+              onClick={() => setView("join")}
+            >
+              Join For Free
+            </button>
           </div>
         </div>
       )}
 
-      {/* Sign-in modal component included inline for this page */}
-      <SignInModal
-        isOpen={showSignIn}
-        isJoin={isJoinMode}
-        onClose={() => setShowSignIn(false)}
-        onSwitchToRegister={() => {
-          // close modal and optionally scroll to a register section (if exists)
-          setShowSignIn(false);
-          const reg = document.getElementById("registerForm");
-          if (reg) reg.scrollIntoView({ behavior: "smooth", block: "center" });
-        }}
-      />
-    </div>
-  );
-};
+      {/* ===============================
+          SIGN IN FORM
+      ================================ */}
+      {view === "signin" && (
+        <div className="auth-container">
+          <h2>Member Sign In</h2>
 
-// Inline SignInModal component (keeps JSX in same file; styles appended to Loyalty.css)
-function SignInModal({ isOpen, onClose, onSwitchToRegister, isJoin }) {
-  const overlayRef = useRef(null);
-  const firstInputRef = useRef(null);
-  const previouslyFocused = useRef(null);
-
-  useEffect(() => {
-    function onKey(e) {
-      if (e.key === "Escape") onClose();
-    }
-    if (isOpen) {
-      previouslyFocused.current = document.activeElement;
-      document.body.style.overflow = "hidden";
-      document.addEventListener("keydown", onKey);
-      // focus first input when opened
-      setTimeout(() => firstInputRef.current?.focus(), 0);
-    } else {
-      document.body.style.overflow = "";
-      document.removeEventListener("keydown", onKey);
-      previouslyFocused.current?.focus?.();
-    }
-    return () => {
-      document.body.style.overflow = "";
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [isOpen, onClose]);
-
-  function onOverlayClick(e) {
-    if (e.target === overlayRef.current) onClose();
-  }
-
-  if (!isOpen) return null;
-
-  return (
-    <div
-      className="sr-modal-overlay"
-      ref={overlayRef}
-      role="dialog"
-      aria-modal="true"
-      onClick={onOverlayClick}
-    >
-      <div className="sr-modal" role="document">
-        <div className="sr-modal-header">
-          <h3>{isJoin ? "Join Infinity Rewards" : "Sign in to Infinity Rewards"}</h3>
-          <button className="sr-modal-close" onClick={onClose} aria-label="Close">
-            ×
-          </button>
-        </div>
-
-        <div className="sr-modal-body">
-          <form
-            className="sr-signin-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              // TODO: perform auth request; demo closes modal after fake success
-              setTimeout(() => {
-                onClose();
-                // optionally show upgrade or success feedback
-              }, 700);
-            }}
-          >
-            <label className="sr-field">
-              <span className="sr-label">Full Name</span>
-              <input
-                ref={firstInputRef}
-                type="text"
-                name="fullName"
-                required
-                autoComplete="name"
-              />
+          <form onSubmit={handleSignIn} className="auth-form">
+            <label>
+              Email
+              <input type="email" required />
             </label>
 
-            <label className="sr-field">
-              <span className="sr-label">Email</span>
-              <input
-                type="email"
-                name="email"
-                required
-                autoComplete="email"
-              />
+            <label>
+              Password
+              <input type="password" required />
             </label>
 
-            <label className="sr-field">
-              <span className="sr-label">Phone Number</span>
-              <input
-                type="tel"
-                name="phone"
-                required
-                autoComplete="tel"
-              />
-            </label>
+            <button type="submit" className="btn btn-primary">
+              Sign In
+            </button>
 
-            <label className="sr-field">
-              <span className="sr-label">Date of Birth</span>
-              <input
-                type="date"
-                name="dob"
-                required
-                autoComplete="bday"
-              />
-            </label>
-
-            <div className="sr-actions">
-              <button type="submit" className="sr-btn sr-btn-primary">{isJoin ? "Join" : "Sign In"}</button>
-              {!isJoin && (
-                <button
-                  type="button"
-                  className="sr-btn sr-btn-ghost"
-                  onClick={() => {
-                    onClose();
-                    onSwitchToRegister?.();
-                  }}
-                >
-                  Create account
-                </button>
-              )}
-            </div>
+            <p className="switch-text">
+              Not a member?{" "}
+              <span onClick={() => setView("join")}>
+                Join Now
+              </span>
+            </p>
           </form>
         </div>
+      )}
 
-        <div className="sr-modal-footer">
-          <small>{isJoin ? "Already a member? Use the Sign in button on the page." : "Already a member? Use the form above to sign in."}</small>
+      {/* ===============================
+          JOIN FORM
+      ================================ */}
+      {view === "join" && (
+        <div className="auth-container">
+          <h2>Join Infinity Rewards</h2>
+
+          <form onSubmit={handleJoin} className="auth-form">
+
+            <label>
+              Full Name
+              <input type="text" required />
+            </label>
+
+            <label>
+              Phone Number
+              <input type="tel" required />
+            </label>
+
+            <label>
+              Email
+              <input type="email" required />
+            </label>
+
+            <label>
+              Date of Birth
+              <input type="date" required />
+            </label>
+
+            <label className="checkbox-label">
+              <input type="checkbox" required />
+              I agree to the Privacy Policy and Infinity Rewards Terms.
+            </label>
+
+            <button type="submit" className="btn btn-primary">
+              Join Now
+            </button>
+
+            <p className="switch-text">
+              Already a member?{" "}
+              <span onClick={() => setView("signin")}>
+                Sign In
+              </span>
+            </p>
+          </form>
         </div>
-      </div>
+      )}
+
+      {/* ===============================
+          DASHBOARD (LOYALTY PAGE AFTER LOGIN)
+      ================================ */}
+      {view === "dashboard" && isLoggedIn && (
+        <div className="dashboard">
+          <h2>Welcome to Infinity Rewards</h2>
+          <p>Your loyalty benefits are now active.</p>
+
+          <div className="benefits-box">
+            <p>✔ Free WiFi</p>
+            <p>✔ Priority Check-in</p>
+            <p>✔ Bonus Points</p>
+            <p>✔ Room Upgrade Eligibility</p>
+          </div>
+
+          <button 
+            className="btn btn-outline"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </div>
+      )}
+
     </div>
   );
 }

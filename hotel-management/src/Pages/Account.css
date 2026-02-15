@@ -61,22 +61,157 @@
 .item-card button{ padding:8px 12px; border-radius:10px; border:0; background:var(--accent); color:white; cursor:pointer }
 
 /* Sidebar / cart */
-.sidebar{ }
-.cart{ background:var(--card); padding:18px; border-radius:16px; box-shadow:0 12px 30px rgba(2,6,23,0.06); position:sticky; top:20px }
-.cart h2{ margin-top:0; margin-bottom:10px }
-.cart .empty{ color:var(--muted); }
-.cart ul{ list-style:none; padding:0; margin:0 0 12px 0; display:flex; flex-direction:column; gap:10px }
-.cart-item{ display:flex; justify-content:space-between; gap:10px; align-items:center; padding:10px; border-radius:10px; background:#f8fafc }
-.cart-item .name{ font-weight:600 }
-.cart-item .type{ font-size:0.85rem; color:var(--muted) }
-.cart-item .right{ display:flex; gap:8px; align-items:center }
-.cart-item .price{ font-weight:700 }
-.cart-item .remove{ background:var(--danger); color:white; border:0; padding:6px 8px; border-radius:8px; cursor:pointer }
+/* ------------------ Cart Sidebar ------------------ */
+.cart-sidebar {
+  width: 320px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  position: sticky;
+  top: 20px;
+}
 
-.cart-footer{ margin-top:8px }
-.cart-footer .total{ display:flex; justify-content:space-between; align-items:center; padding:12px 10px; border-radius:10px; background:#f3f4f6; margin-bottom:10px }
-.checkout{ width:100%; padding:10px 12px; border-radius:10px; border:0; background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:white; font-weight:700; cursor:pointer }
-.checkout[disabled]{ opacity:0.6; cursor:not-allowed }
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.cart-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.cart-count {
+  font-size: 14px;
+  color: #666;
+}
+
+.cart-empty {
+  text-align: center;
+  padding: 40px 0;
+  color: #999;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.item-info h4 {
+  font-size: 15px;
+  margin: 0 0 4px 0;
+  font-weight: 500;
+}
+
+.item-info .item-type {
+  display: block;
+  font-size: 12px;
+  color: #888;
+}
+
+.item-info .item-price {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 4px;
+  display: block;
+}
+
+.item-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.qty-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.qty-btn:hover {
+  background: #f5f5f5;
+}
+
+.qty {
+  width: 24px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.cart-footer {
+  border-top: 1px solid #eee;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.subtotal {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 10px 0;
+  background: linear-gradient(90deg,#ff7e1b,#ff4a0c);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.checkout-btn:hover:enabled {
+  background: linear-gradient(90deg,#ff901e,#ff5c2d);
+}
+
+.checkout-btn:disabled {
+  background: #f0f0f0;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Make sidebar responsive on mobile */
+@media (max-width: 900px) {
+  .cart-sidebar {
+    width: 100%;
+    position: static;
+  }
+}
+
 
 /* Runner popup */
 .runner-confirm-popup{ position:fixed; inset:0; background:rgba(2,6,23,0.5); display:flex; align-items:center; justify-content:center; z-index:60 }

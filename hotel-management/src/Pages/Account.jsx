@@ -85,14 +85,34 @@ function Account() {
       // Show popup for Runner Service confirmation
       setRunnerConfirmItem({ ...item, type });
     } else {
-      setCart([...cart, { ...item, type, finalPrice: item.price }]);
+      setCart((prev) => {
+        const matchIndex = prev.findIndex((c) => c.id === item.id && c.type === type);
+        if (matchIndex > -1) {
+          const next = [...prev];
+          const existing = { ...next[matchIndex] };
+          existing.quantity = (existing.quantity ?? 1) + 1;
+          next[matchIndex] = existing;
+          return next;
+        }
+        return [...prev, { ...item, type, finalPrice: item.price, quantity: 1 }];
+      });
     }
   };
 
   const confirmRunnerService = () => {
     if (!runnerConfirmItem) return;
     const finalPrice = runnerConfirmItem.price + runnerConfirmItem.extraCharge;
-    setCart([...cart, { ...runnerConfirmItem, finalPrice }]);
+    setCart((prev) => {
+      const matchIndex = prev.findIndex((c) => c.id === runnerConfirmItem.id && c.type === runnerConfirmItem.type);
+      if (matchIndex > -1) {
+        const next = [...prev];
+        const existing = { ...next[matchIndex] };
+        existing.quantity = (existing.quantity ?? 1) + 1;
+        next[matchIndex] = existing;
+        return next;
+      }
+      return [...prev, { ...runnerConfirmItem, finalPrice, quantity: 1 }];
+    });
     setRunnerConfirmItem(null);
   };
 
@@ -100,16 +120,29 @@ function Account() {
     setRunnerConfirmItem(null);
   };
 
-  const removeFromCart = (index) => {
-    const newCart = [...cart];
-    newCart.splice(index, 1);
-    setCart(newCart);
+  // NOTE: explicit `removeFromCart` function removed.
+  // Items are removed when their quantity reaches 0 via `changeQuantity`.
+  // This keeps a single, consistent place for item removal logic.
+  const changeQuantity = (index, delta) => {
+    setCart((prev) => {
+      if (index < 0 || index >= prev.length) return prev;
+      const next = [...prev];
+      const item = { ...next[index] };
+      item.quantity = (item.quantity ?? 1) + delta;
+      if (item.quantity <= 0) {
+        next.splice(index, 1);
+      } else {
+        next[index] = item;
+      }
+      return next;
+    });
   };
 
-  const total = cart.reduce(
-    (acc, item) => acc + (typeof item.finalPrice === "number" ? item.finalPrice : item.price || 0),
-    0
-  );
+  const total = cart.reduce((acc, item) => {
+    const unit = typeof item.finalPrice === "number" ? item.finalPrice : item.price || 0;
+    const qty = item.quantity ?? 1;
+    return acc + unit * qty;
+  }, 0);
 
   const fmt = new Intl.NumberFormat(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 2 });
 
@@ -227,41 +260,52 @@ function Account() {
           </section>
         </main>
 
-        <aside className="sidebar">
-          <div className="cart">
-            <h2>Cart</h2>
-            {cart.length === 0 ? (
-              <p className="empty">Cart is empty.</p>
-            ) : (
-              <ul>
-                {cart.map((item, index) => (
-                  <li key={index} className="cart-item">
-                    <div>
-                      <div className="name">{item.name}</div>
-                      <div className="type">{item.type}</div>
-                    </div>
-                    <div className="right">
-                      <div className="price">{fmt.format(item.finalPrice ?? item.price)}</div>
-                      <button className="remove" onClick={() => removeFromCart(index)}>
-                        Remove
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
+        <aside className="cart-sidebar">
+  <div className="cart-header">
+    <h2>Cart</h2>
+    <span className="cart-count">{cart.length} {cart.length === 1 ? 'item' : 'items'}</span>
+  </div>
 
-            <div className="cart-footer">
-              <div className="total">
-                <span>Total</span>
-                <strong>{fmt.format(total)}</strong>
-              </div>
-              <button className="checkout" onClick={handleCheckout} disabled={checkoutLoading || cart.length === 0}>
-                {checkoutLoading ? "Processing..." : "Place Order"}
-              </button>
-            </div>
+  {cart.length === 0 ? (
+    <div className="cart-empty">
+      <p>Your cart is empty.</p>
+    </div>
+  ) : (
+    <ul className="cart-items">
+      {cart.map((item, index) => (
+        <li key={`${item.id}-${item.type}`} className="cart-item">
+          <div className="item-info">
+            <h4>{item.name}</h4>
+            <span className="item-type">{item.type}</span>
+            <span className="item-price">{fmt.format(item.finalPrice || item.price)}</span>
           </div>
-        </aside>
+          <div className="item-controls">
+            <button onClick={() => changeQuantity(index, -1)} className="qty-btn">−</button>
+            <span className="qty">{item.quantity ?? 1}</span>
+            <button onClick={() => changeQuantity(index, 1)} className="qty-btn">+</button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {cart.length > 0 && (
+    <div className="cart-footer">
+      <div className="subtotal">
+        <span>Subtotal</span>
+        <strong>{fmt.format(total)}</strong>
+      </div>
+      <button
+        className="checkout-btn"
+        onClick={handleCheckout}
+        disabled={checkoutLoading}
+      >
+        {checkoutLoading ? "Placing order..." : "Place Order"}
+      </button>
+    </div>
+  )}
+</aside>
+
       </div>
 
       {/* RUNNER SERVICE CONFIRM POPUP */}
