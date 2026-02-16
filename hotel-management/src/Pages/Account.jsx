@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+
 import "./Account.css";
 
 // -------------------- SAMPLE DATA --------------------
@@ -28,7 +27,8 @@ const sampleShop = [
 
 // -------------------- ACCOUNT COMPONENT --------------------
 function Account() {
-  const { bookingId } = useParams(); // Get bookingId from URL
+  
+  
 
   // -------------------- STATE --------------------
   const [activeTab, setActiveTab] = useState("Room Service"); // Default tab
@@ -43,41 +43,13 @@ function Account() {
 
   // -------------------- LOAD SAMPLE DATA --------------------
   useEffect(() => {
+    // Load demo/mock items
     setRoomService(sampleRoomService);
     setFoodMenu(sampleFood);
     setRunnerService(sampleRunnerService);
     setShopItems(sampleShop);
-  }, []); // Run once on mount
-
-  // -------------------- FETCH CART FROM BACKEND --------------------
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(`/api/cart/${bookingId}`);
-        setCart(response.data || []);
-      } catch (error) {
-        console.error("Failed to fetch cart:", error);
-        setCart([]); // fallback
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCart();
-  }, [bookingId]);
-
-  // -------------------- SYNC CART TO BACKEND --------------------
-  useEffect(() => {
-    const saveCart = async () => {
-      try {
-        await axios.post(`/api/cart/${bookingId}`, cart);
-      } catch (error) {
-        console.error("Failed to save cart:", error);
-      }
-    };
-    if (!loading) saveCart(); // Avoid saving while fetching
-  }, [cart, bookingId, loading]);
+    setLoading(false); // Data loaded
+  }, []);
 
   // -------------------- CART ACTIONS --------------------
   const addToCart = (item, type, isRunner = false) => {
@@ -152,14 +124,11 @@ function Account() {
 
     setCheckoutLoading(true);
     try {
-      await axios.post(`/api/cart/${bookingId}/checkout`, { cart });
-
-      alert("Checkout successful! Your order has been placed.");
+          alert("Your order has been placed.");
 
       // Clear cart locally and on backend
       setCart([]);
-      await axios.post(`/api/cart/${bookingId}`, []);
-    } catch (error) {
+      } catch (error) {
       console.error("Checkout failed:", error);
       alert("Checkout failed. Please try again.");
     } finally {
@@ -180,7 +149,6 @@ function Account() {
     <div className="account-page">
       <header className="account-header">
         <h1>Welcome to Urban Hotel</h1>
-        <p className="sub">Booking: {bookingId || "—"}</p>
       </header>
 
       <div className="account-grid">

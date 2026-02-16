@@ -46,7 +46,7 @@ function App() {
             <Route path="/loyalty-program" element={<Loyalty />} />
 
             {/* Dynamic account page */}
-            <Route path="/account/:bookingId" element={<Account />} />
+            <Route path="/account" element={<Account />} />
 
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/" replace />} />
