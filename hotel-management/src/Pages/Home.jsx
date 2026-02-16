@@ -6,6 +6,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
+
 import "./Home.css";
 
 const Home = () => {
@@ -169,6 +170,15 @@ const Home = () => {
             <img src="https://cdn.prod.website-files.com/66456ff69b6aadbdb065af90/684abcc090cb758365ac977e_spa-entertainment-facility-korus.webp" alt="Spa Area" />
           </div>
         </div>
+      </section>
+      
+      {/* Contact Section (Added for scroll) */}
+      <section id="contact-section" className="contact-section">
+        <h2>Contact Us</h2>
+        <p>Hotel Name: Urbann Hotel</p>
+        <p>Address: 123 Ocean Drive, Miami, FL</p>
+        <p>Phone: +1 234 567 890</p>
+        <p>Email: contact@urbannhotel.com</p>
       </section>
 
 

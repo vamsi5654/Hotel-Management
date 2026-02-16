@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
 import logo from "../assets/UrbanHotel.webp";
 
+
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
@@ -27,7 +28,7 @@ const minCheckout = checkin ? checkin : formatDate(today);
   const location = useLocation();
   const navigate = useNavigate();
   const isBookingPage = location.pathname === "/checking-in-out";
-
+    
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Amenities", path: "/amenities" },
@@ -35,6 +36,7 @@ const minCheckout = checkin ? checkin : formatDate(today);
     { name: "Contact", path: "/contact" },
   ];
 
+  
   // Header hide on scroll
   useEffect(() => {
     if (!isBookingPage) return;
@@ -155,18 +157,21 @@ const minCheckout = checkin ? checkin : formatDate(today);
                       {totalGuests} Guests, {rooms.length} Room{rooms.length > 1 ? "s" : ""}
                     </div>
 
-                    {guestDropdownOpen && (
-                      <div className="guest-dropdown">
-                        {rooms.map((room, index) => (
-                          <div key={index} className="room-block">
-                            <h4>
-                              Room {index + 1} 
-                              {rooms.length > 1 && (
-                                <button type="button" onClick={() => deleteRoom(index)} style={{ float: "right", color: "red", border: "none", background: "none", cursor: "pointer" }}>
-                                  ✕
-                                </button>
-                              )}
-                            </h4>
+                   <div className="guest-dropdown">
+      {rooms.map((room, index) => (
+        <div key={index} className="room-block">
+          <h4>
+            Room {index + 1}
+            {rooms.length > 1 && (
+              <button
+                type="button"
+                className="remove-room-btn"
+                onClick={() => deleteRoom(index)}
+              >
+                remove
+              </button>
+            )}
+          </h4>
 
                             <div className="guest-row">
                               <span>Adults</span>
@@ -192,7 +197,6 @@ const minCheckout = checkin ? checkin : formatDate(today);
                           <button type="button" onClick={addRoom}>Add Room</button>
                         </div>
                       </div>
-                    )}
                   </div>
                 )}
 

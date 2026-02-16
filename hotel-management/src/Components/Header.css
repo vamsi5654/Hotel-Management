@@ -178,6 +178,34 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  .guest-dropdown {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #fff;
+  position: absolute;
+  z-index: 10;
+  width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.room-block {
+  margin-bottom: 10px;
+}
+
+.room-block h4 {
+  margin: 0;
+  font-size: 16px;
+  position: relative;
+}
+
+.remove-room-btn {
+  float: right;
+  color: red;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+}
 }
 
 /* ROOM BLOCK */
