@@ -58,11 +58,9 @@ function RoomSelection() {
       return;
     }
 
-    // Generate mock booking ID
-    const bookingId = "BK" + Math.floor(Math.random() * 100000);
-
+    
     // Navigate to Account page with booking details
-    navigate(`/account/${bookingId}`, {
+    navigate(`/account/`, {
       state: { roomType, checkin, checkout, rooms, fullName },
     });
   };
