@@ -22,17 +22,14 @@ function Footer() {
               </ul>
               <ul>
                 <li><Link to="/blogs">Blogs</Link></li>
-                <li><Link to="/day-use">Day Use</Link></li>
                 <li><Link to="/cookies-policy">Cookies Policy</Link></li>
-                <li><Link to="/non-affiliation">Non Affiliation</Link></li>
                 <li><Link to="/terms">Terms & Conditions</Link></li>
               </ul>
               <ul>
                 <li><Link to="/media">Media</Link></li>
                 <li><Link to="/site-map">Site Map</Link></li>
                 <li><Link to="/travel-guidelines">Travel Guidelines</Link></li>
-                <li><Link to="/investor-relations">Investor relations</Link></li>
-              </ul>
+                </ul>
               <ul>
                 <li><Link to="/loyalty-program">Loyalty Program</Link></li>
               </ul>

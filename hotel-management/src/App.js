@@ -43,6 +43,7 @@ function App() {
 
             {/* Loyalty page */}
             <Route path="/loyalty-benefits" element={<Loyalty />} />
+            <Route path="/loyalty-program" element={<Loyalty />} />
 
             {/* Dynamic account page */}
             <Route path="/account/:bookingId" element={<Account />} />

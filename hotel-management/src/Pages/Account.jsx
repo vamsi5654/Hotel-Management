@@ -144,7 +144,7 @@ function Account() {
     return acc + unit * qty;
   }, 0);
 
-  const fmt = new Intl.NumberFormat(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 2 });
+  const fmt = new Intl.NumberFormat(undefined, { style: "currency", currency: "INR", maximumFractionDigits: 2 });
 
   // -------------------- CHECKOUT --------------------
   const handleCheckout = async () => {
