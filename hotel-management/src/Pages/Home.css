@@ -30,7 +30,7 @@
   font-size: 40px;
   font-weight: 900;
   background: linear-gradient(45deg, #220808, #29031e);
-  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-transform: uppercase;
   letter-spacing: 4px;
@@ -209,4 +209,51 @@
 .gallery-item:hover img {
   transform: scale(1.1);
 }
+/* ===== Premium 5-Star Contact Section ===== */
 
+.contact-section {
+  padding: 100px 20px;
+  text-align: center;
+  background: linear-gradient(
+      rgba(10, 10, 10, 0.85),
+      rgba(10, 10, 10, 0.85)
+    ),
+    url("https://images.unsplash.com/photo-1501117716987-c8e1ecb210f9?auto=format&fit=crop&w=1600&q=80")
+      center/cover no-repeat;
+  color: #f5f5f5;
+  position: relative;
+}
+
+.contact-section h2 {
+  font-size: 42px;
+  margin-bottom: 40px;
+  letter-spacing: 3px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #d4af37, #f8e6b0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.contact-section p {
+  font-size: 18px;
+  margin: 15px 0;
+  letter-spacing: 1px;
+  color: #e0e0e0;
+}
+
+.contact-section p strong {
+  color: #d4af37;
+}
+
+/* Optional luxury divider */
+.contact-section::after {
+  content: "";
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(to right, #d4af37, #f8e6b0);
+  display: block;
+  margin: 40px auto 0;
+  border-radius: 2px;
+}

@@ -17,7 +17,7 @@ function Footer() {
                 <li><Link to="/awards">Awards</Link></li>
                 <li><Link to="/about">About us</Link></li>
                 <li><Link to="/careers">Careers</Link></li>
-                <li><Link to="/contact">Contact us</Link></li>
+                <Link to="/#contact-section">Contact Us</Link>
                 <li><Link to="/privacy">Privacy Policy</Link></li>
               </ul>
               <ul>

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
@@ -10,6 +11,35 @@ import "swiper/css/pagination";
 import "./Home.css";
 
 const Home = () => {
+  const location = useLocation();
+
+/*
+  This effect runs whenever URL changes.
+  If URL contains a hash (#contact-section),
+  it will scroll smoothly to that section.
+*/
+useEffect(() => {
+  if (location.hash) {
+    const element = document.querySelector(location.hash);
+
+    if (element) {
+      // Small delay ensures page fully renders before scrolling
+      setTimeout(() => {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+    }
+  } else {
+    // No hash → Scroll to top
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+}, [location]);
+
   return (
     <main className="home">
 
@@ -176,8 +206,8 @@ const Home = () => {
       <section id="contact-section" className="contact-section">
         <h2>Contact Us</h2>
         <p>Hotel Name: Urbann Hotel</p>
-        <p>Address: 123 Ocean Drive, Miami, FL</p>
-        <p>Phone: +1 234 567 890</p>
+        <p>Address: The 27", Jayabheri Enclave, Phase 2, Gachibowli, Hyderabad, Telangana, 500032</p>
+        <p>Phone: +91 123456789</p>
         <p>Email: contact@urbannhotel.com</p>
       </section>
 

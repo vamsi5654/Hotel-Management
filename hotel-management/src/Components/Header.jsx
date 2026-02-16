@@ -33,9 +33,9 @@ const minCheckout = checkin ? checkin : formatDate(today);
     { name: "Home", path: "/" },
     { name: "Amenities", path: "/amenities" },
     { name: "Loyalty", path: "/loyalty-benefits" },
-    { name: "Contact", path: "/contact" },
+    { name: "Contact", path: "/#contact-section" },
   ];
-
+  
   
   // Header hide on scroll
   useEffect(() => {
