@@ -45,16 +45,16 @@
   display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;
 }
 .tabs button{
-  padding:8px 14px; border-radius:999px; border:0; background:#e6eef2; color:#0f172a; font-weight:600; cursor:pointer;
+  padding:8px 14px; border-radius:999px; border:0; background:#eceeee; color:#05070b; font-weight:600; cursor:pointer;
 }
-.tabs button.active{ background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:white; box-shadow:0 6px 18px rgba(2,6,23,0.08); }
+.tabs button.active{ background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:white; box-shadow:0 6px 18px rgba(2, 4, 11, 0.08); }
 
 .section-title{ margin:10px 0 8px; color:#0f172a }
 
 .items-grid{ display:grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap:14px }
 
 .item-card{
-  background:var(--card); padding:12px 14px; border-radius:var(--radius); display:flex; justify-content:space-between; align-items:center; box-shadow:0 6px 18px rgba(2,6,23,0.04);
+  background:#eceeee; padding:12px 14px; border-radius:var(--radius); display:flex; justify-content:space-between; align-items:center; box-shadow:0 6px 18px rgba(2,6,23,0.04);
 }
 .item-card h4{ margin:0 0 4px; font-size:1rem }
 .item-card .meta{ color:var(--muted); font-size:0.9rem }
